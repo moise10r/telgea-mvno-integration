@@ -14,6 +14,10 @@ function main () {
     const combinedData = mvnoIntegrationService.processUserData(soapResponse,restData)
     console.log('\n1. Processing combined data from both sources:');
     console.log(JSON.stringify(combinedData, null, 2));
+
+    console.log('\n2. Processing rest data from REST API:');
+    const processedRestData = mvnoIntegrationService.processRestData(restData);
+    console.log(JSON.stringify(processedRestData, null, 2));
     
     console.log('\nMVNO API integration completed successfully.');
   
