@@ -18,6 +18,11 @@ function main () {
     console.log('\n2. Processing rest data from REST API:');
     const processedRestData = mvnoIntegrationService.processRestData(restData);
     console.log(JSON.stringify(processedRestData, null, 2));
+
+
+    console.log('\n3. Processing SMS charge data from SOAP API:');
+    const smsData = mvnoIntegrationService.processSmsCharges([soapResponse,/* other soap responses*/]);
+    console.log(JSON.stringify(smsData, null, 2));
     
     console.log('\nMVNO API integration completed successfully.');
   

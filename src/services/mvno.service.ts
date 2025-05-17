@@ -60,4 +60,13 @@ export class MvnoIntegrationService {
     return this.restConverter.convertUsageToNormalizedFormat(restResponse);
   }
 
+    /**
+   * Processes multiple SOAP responses for the same user
+   * 
+   * @param soapResponses - Array of SOAP responses
+   * @returns Normalized data with combined SMS charges
+   */
+    public processSmsCharges(soapResponses: MvnoSoapChargeSmsResponse[]): InternalNormalizedData {
+      return this.soapConverter.batchConvert(soapResponses);
+    }
 }

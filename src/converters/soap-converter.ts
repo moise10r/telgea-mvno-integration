@@ -90,4 +90,26 @@ export class SoapConverter {
       throw new Error(`Invalid timestamp format: ${timestamp}`);
     }
   }
+
+    /**
+   * Handles batch SOAP responses by merging multiple records into one normalized format
+   * 
+   * @param soapResponses - Array of SOAP responses
+   * @returns The merged normalized data
+   */
+    public batchConvert(soapResponses: MvnoSoapChargeSmsResponse[]): InternalNormalizedData {
+      if (!soapResponses.length) {
+        throw new Error('No SOAP responses provided for batch conversion');
+      }
+  
+      // Start with data from the first response
+      let mergedData = this.convertChargeSmsToNormalizedFormat(soapResponses[0]);
+  
+      // Merge in data from additional responses
+      for (let i = 1; i < soapResponses.length; i++) {
+        mergedData = this.convertChargeSmsToNormalizedFormat(soapResponses[i], mergedData);
+      }
+  
+      return mergedData;
+    }
 }
