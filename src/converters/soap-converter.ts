@@ -1,8 +1,6 @@
 import { InternalNormalizedData } from "../interfaces/internalNormalizedData";
 import { InternalSmsCharge } from "../interfaces/internalSmsCharge";
 import { MvnoSoapChargeSmsResponse } from "../interfaces/mvnoSoapChargeSmsResponse";
-import { parseSoapXML } from "../utils/xmlParser";
-import fs from 'fs';
 
 
 /**
