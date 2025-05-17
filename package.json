@@ -2,16 +2,19 @@
   "name": "telgea",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc && node dist/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "NGANULO RUSHANIKA Moise",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^22.15.18",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.5.0"
   }
 }
