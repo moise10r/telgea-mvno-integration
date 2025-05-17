@@ -2,7 +2,7 @@
 import { RestConverter } from '../converters/rest-converter';
 import { SoapConverter } from '../converters/soap-converter';
 import { InternalNormalizedData } from '../interfaces/internalNormalizedData';
-import { MvnoRestResponse } from '../interfaces/MvnoRestResponse';
+import { MvnoRestResponse } from '../interfaces/mvnoRestResponse';
 import { MvnoSoapChargeSmsResponse } from '../interfaces/mvnoSoapChargeSmsResponse';
 
 /**
