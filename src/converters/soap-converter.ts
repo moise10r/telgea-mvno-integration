@@ -1,6 +1,8 @@
 import { InternalNormalizedData } from "../interfaces/internalNormalizedData";
 import { InternalSmsCharge } from "../interfaces/internalSmsCharge";
 import { MvnoSoapChargeSmsResponse } from "../interfaces/mvnoSoapChargeSmsResponse";
+import { parseSoapXML } from "../utils/xmlParser";
+import fs from 'fs';
 
 
 /**
@@ -13,41 +15,47 @@ export class SoapConverter {
    * @param soapResponse - The SOAP response from the MVNO API
    * @returns The internal normalized data format
    */
-  public convertChargeSmsToNormalizedFormat(
-    soapResponse: MvnoSoapChargeSmsResponse,
-  ): InternalNormalizedData {
-    try {
-      // Extract the SMS charge data from the SOAP response
-      const smsData = soapResponse['soapenv:Envelope']['soapenv:Body']['sms:ChargeSMS'];
-      
-      const smsCharge: InternalSmsCharge = {
-        message_id: smsData['sms:MessageID'],
-        timestamp: smsData['sms:Timestamp'],
-        amount: parseFloat(smsData['sms:ChargeAmount']),
-        currency: smsData['sms:Currency']
-      };
-      const normalizedData: InternalNormalizedData = {
-        telgea_user_id: smsData['sms:UserID'],
-        msisdn: smsData['sms:PhoneNumber'],
-        usage_data:  {
-          total_mb: 0,
-          roaming_mb: 0,
-          country: '',
-          network_type: '',
-          provider_code: ''
-        },
-        sms_charges: [smsCharge],
-        billing_period: {
-          start: this.extractDateFromTimestamp(smsData['sms:Timestamp']),
-          end: this.getEndOfMonth(smsData['sms:Timestamp'])
-        }
-      };
+  
+ public convertChargeSmsToNormalizedFormat(
+   soapResponse: MvnoSoapChargeSmsResponse,
+   existingData?: Partial<InternalNormalizedData>
+ ): InternalNormalizedData {
+   try {
 
-      return normalizedData;
-    } catch (error) {
-      throw new Error(`Failed to convert SOAP response: ${error instanceof Error ? error.message : String(error)}`);
-    }
-  }
+     const smsData = soapResponse['soapenv:Envelope']['soapenv:Body']['sms:ChargeSMS'];
+     
+     const smsCharge: InternalSmsCharge =  {
+       message_id: smsData['sms:MessageID'],
+       timestamp: smsData['sms:Timestamp'],
+       amount: parseFloat(smsData['sms:ChargeAmount']),
+       currency: smsData['sms:Currency']
+     };
+
+     const normalizedData: InternalNormalizedData = {
+       telgea_user_id: existingData?.telgea_user_id || smsData['sms:UserID'],
+       msisdn: existingData?.msisdn || smsData['sms:PhoneNumber'],
+       usage_data: existingData?.usage_data || {
+         total_mb: 0,
+         roaming_mb: 0,
+         country: '',
+         network_type: '',
+         provider_code: ''
+       },
+       sms_charges: existingData?.sms_charges 
+         ? [...existingData.sms_charges, smsCharge] 
+         : [smsCharge],
+       billing_period: existingData?.billing_period || {
+         start: this.extractDateFromTimestamp(smsData['sms:Timestamp']),
+         end: this.getEndOfMonth(smsData['sms:Timestamp'])
+       }
+     };
+
+     return normalizedData;
+   } catch (error) {
+     throw new Error(`Failed to convert SOAP response: ${error instanceof Error ? error.message : String(error)}`);
+   }
+ }
+
 
   /**
    * Extracts the date portion from a timestamp and sets it to the start of the day

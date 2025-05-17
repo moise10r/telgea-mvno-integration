@@ -10,5 +10,7 @@ export interface MvnoSoapChargeSmsResponse {
         'sms:Currency': string;
       };
     };
+    'xmlns:soapenv': string;
+    'xmlns:sms': string;
   };
 }

@@ -1,22 +1,14 @@
-import {  RestConverter } from "./conveters/rest-converter";
-import { SoapConverter } from "./conveters/soap-converter";
+import {  MvnoIntegrationService } from "./services/mvno.service";
 import restData from './mocks/mvno_rest_response.json';
+import { parseXML } from "./utils/xmlParser";
+import { MvnoSoapChargeSmsResponse } from "./interfaces/mvnoSoapChargeSmsResponse";
+import fs from 'fs';
 
-const restConverter = new RestConverter();
-const soapConverter = new SoapConverter()
-console.log('restConverter', restConverter.convertUsageToNormalizedFormat(restData), soapConverter.convertChargeSmsToNormalizedFormat({
-  'soapenv:Envelope': {
-    'soapenv:Body': {
-      'sms:ChargeSMS': {
-        'sms:UserID': 'abc123',
-        'sms:PhoneNumber': '+46701234567',
-        'sms:MessageID': 'msg789',
-        'sms:Timestamp': '2025-04-01T12:30:00Z',
-        'sms:ChargeAmount': '0.05',
-        'sms:Currency': 'EUR'
-      }
-    }
-  }
-}));
+const soapXML = fs.readFileSync('./src/mocks/mvno_soap_spec.xml', 'utf-8');
+const soapResponse = parseXML<MvnoSoapChargeSmsResponse>(soapXML);
+const mvnoIntegrationService = new MvnoIntegrationService();
+console.log('restConverter', mvnoIntegrationService.processUserData(soapResponse,restData));
+
+
 
 console.log('Server is running')
