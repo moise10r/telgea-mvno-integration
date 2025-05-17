@@ -1,6 +1,6 @@
 import { InternalSmsCharge } from "./internalSmsCharge";
 
-export interface internalNormalizedData{
+export interface InternalNormalizedData{
   telgea_user_id: string;
   msisdn: string;
   usage_data: {

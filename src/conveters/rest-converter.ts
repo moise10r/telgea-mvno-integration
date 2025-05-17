@@ -1,4 +1,4 @@
-import { internalNormalizedData } from "../interfaces/internalNormalizedData";
+import { InternalNormalizedData } from "../interfaces/internalNormalizedData";
 import { MvnoRestResponse } from "../interfaces/MvnoRestResponse";
 
 export class RestConverter {
@@ -6,13 +6,13 @@ export class RestConverter {
    * Converts a REST Mvno response to the internal normalized format
 
    * @param restResponse - The REST response from the MVNO API
-   * @returns The internal normalized data format
+   * @returns The internal normalized data formatd
    */
   public convertUsageToNormalizedFormat(
     restResponse: MvnoRestResponse,
-  ): internalNormalizedData {
+  ): InternalNormalizedData {
     try {
-      const normalizedData: internalNormalizedData = {
+      const normalizedData: InternalNormalizedData = {
         telgea_user_id: restResponse.user_id,
         msisdn: restResponse.msisdn,
         usage_data: {
