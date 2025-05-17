@@ -1,6 +1,6 @@
-import { Message } from "./message";
+import { InternalSmsCharge } from "./internalSmsCharge";
 
-export interface InternalFormat {
+export interface internalNormalizedData{
   telgea_user_id: string;
   msisdn: string;
   usage_data: {
@@ -10,7 +10,7 @@ export interface InternalFormat {
     network_type: string;
     provider_code: string;
   };
-  sms_charges: Array<Message>;
+  sms_charges: Array<InternalSmsCharge>;
   billing_period: {
     start: string;
     end: string;
